@@ -1,0 +1,72 @@
+name: Build and deploy
+
+# Builds the atlas from source on every push and publishes it to GitHub Pages.
+# The site itself is never committed: docs/ is generated here, so the repository
+# stays small and the 700-odd photographs stay out of git history.
+#
+# A cold run fetches everything from Wikipedia and Commons and takes ~10 minutes.
+# Subsequent runs restore build/cache and finish in about one.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      image_width:
+        description: 'Rendered image width in px'
+        default: '680'
+      image_quality:
+        description: 'WebP quality (1-100)'
+        default: '72'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+
+      - name: Restore upstream cache
+        uses: actions/cache@v4
+        with:
+          path: build/cache
+          key: wikicache-${{ github.run_id }}
+          restore-keys: wikicache-
+
+      - name: Resolve places against Wikipedia and Commons
+        run: python3 src/enrich.py
+      - name: Build the region map
+        run: python3 src/buildmap.py
+      - name: Render photographs
+        run: python3 src/render_images.py --width "${{ inputs.image_width || '680' }}" --quality "${{ inputs.image_quality || '72' }}"
+      - name: Assemble the atlas
+        run: python3 src/build.py
+      - name: Verify
+        run: python3 src/verify.py
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

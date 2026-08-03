@@ -1,0 +1,3 @@
+Pillow>=10.0        # image decoding and WebP encoding
+pyshp>=2.3          # reads the Natural Earth shapefile
+shapely>=2.0        # dissolves provinces into regions, verifies point-in-region

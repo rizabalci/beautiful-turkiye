@@ -1,0 +1,30 @@
+name: Verify
+
+# Runs the pipeline against live upstream data and checks the result. The
+# geographic check is the point: it catches a wrong Wikipedia title, which
+# otherwise produces coordinates that look valid but put the place in the sea.
+
+on:
+  pull_request:
+    paths: ['data/**', 'src/**']
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: build/cache
+          key: wikicache-${{ github.run_id }}
+          restore-keys: wikicache-
+      - run: python3 src/enrich.py
+      - run: python3 src/buildmap.py
+      - run: python3 src/render_images.py
+      - run: python3 src/build.py
+      - run: python3 src/verify.py

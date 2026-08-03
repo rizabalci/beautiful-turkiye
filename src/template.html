@@ -1,0 +1,634 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+__META__
+</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beautiful Türkiye — Places Explorer</title>
+<style>
+:root{
+  --ink:#1e2a2f; --ink-soft:#4a5c62; --paper:#f6f2ea; --card:#ffffff;
+  --accent:#c1272d; --accent2:#126b6b; --gold:#c9a227;
+  --shadow:0 1px 2px rgba(30,42,47,.08), 0 8px 24px rgba(30,42,47,.10);
+  --shadow-lg:0 4px 12px rgba(30,42,47,.14), 0 24px 60px rgba(30,42,47,.22);
+  --radius:14px;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+
+header{background:linear-gradient(155deg,#10242c 0%,#123f45 40%,#126b6b 72%,#9c5a34 100%);color:#f4efe4;padding:52px 24px 96px;position:relative;overflow:hidden}
+header::before{content:"";position:absolute;inset:0;opacity:.13;
+  background:radial-gradient(circle at 18% 30%,#e8d9a0 0 2px,transparent 2px),radial-gradient(circle at 62% 66%,#e8d9a0 0 2px,transparent 2px);background-size:190px 190px,150px 150px}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:74px;background:var(--paper);
+  clip-path:polygon(0 74%,5% 52%,10% 70%,16% 36%,22% 64%,29% 26%,36% 60%,43% 40%,51% 68%,59% 30%,66% 58%,73% 42%,80% 66%,87% 48%,93% 68%,100% 52%,100% 100%,0 100%)}
+.h-wrap{max-width:1180px;margin:0 auto;position:relative;z-index:2}
+.eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#e0c25f;margin-bottom:14px;font-weight:600}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,5.4vw,58px);line-height:1.05}
+h1 em{font-style:italic;color:#f0dfa8}
+.sub{margin-top:16px;font-size:16px;line-height:1.6;color:#cfdcd8;max-width:700px}
+.stats{display:flex;gap:34px;margin-top:30px;flex-wrap:wrap}
+.stat b{display:block;font-family:var(--serif);font-size:30px;font-weight:500;color:#fff}
+.stat span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#a3b8b3}
+
+.controls{max-width:1180px;margin:-58px auto 0;padding:0 24px;position:relative;z-index:5}
+.panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.row + .row{margin-top:12px}
+input[type=search]{flex:1;min-width:200px;padding:11px 16px;border:1.5px solid #ded6c7;border-radius:10px;font-size:15px;background:#faf8f4;color:var(--ink);outline:none;font-family:var(--sans)}
+input[type=search]:focus{border-color:var(--accent2)}
+select{padding:10px 12px;border:1.5px solid #ded6c7;border-radius:10px;background:#faf8f4;font-size:14px;color:var(--ink);outline:none}
+.btn-surprise{padding:11px 20px;border:none;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;background:linear-gradient(135deg,#c1272d,#8f1f2c);color:#fff;letter-spacing:.02em;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 14px rgba(193,39,45,.35)}
+.btn-surprise:hover{transform:translateY(-1px);box-shadow:0 7px 20px rgba(193,39,45,.45)}
+.viewtog{display:flex;border:1.5px solid #ded6c7;border-radius:10px;overflow:hidden}
+.viewtog button{border:none;background:#faf8f4;padding:10px 16px;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--ink-soft)}
+.viewtog button.on{background:var(--accent2);color:#fff}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:7px 14px;border-radius:999px;border:1.5px solid #ded6c7;background:#faf8f4;font-size:13px;cursor:pointer;color:var(--ink-soft);transition:all .15s;user-select:none;font-weight:500}
+.chip:hover{border-color:var(--accent2);color:var(--accent2)}
+.chip.on{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.chip .n,.chip i{opacity:.55;font-size:11.5px;margin-left:4px;font-style:normal}
+.chip.badgechip.on{background:var(--gold);border-color:var(--gold);color:#2a2413}
+.chip.unchip.on{background:#3d6b8e;border-color:#3d6b8e;color:#fff}
+.lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9a8f7c;font-weight:700;margin-right:2px;min-width:64px}
+
+main{max-width:1180px;margin:0 auto;padding:30px 24px 10px}
+.count-line{font-size:13.5px;color:#8a7f6d;margin:2px 2px 16px;font-style:italic;font-family:var(--serif)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:22px}
+.cardp{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:transform .18s,box-shadow .18s;display:flex;flex-direction:column;animation:rise .4s ease both;position:relative}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.cardp:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.ph{position:relative;aspect-ratio:3/2.05;overflow:hidden;background:#e8e2d6}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.cardp:hover .ph img{transform:scale(1.045)}
+.ph .st{position:absolute;left:0;top:14px;padding:4px 12px 4px 10px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;border-radius:0 999px 999px 0}
+.mk{position:absolute;left:10px;bottom:10px;display:flex;gap:6px;z-index:3}
+.mk button{border:0;cursor:pointer;font-size:13px;line-height:1;padding:6px 8px;border-radius:999px;
+  background:rgba(255,255,255,.86);backdrop-filter:blur(4px);box-shadow:0 1px 4px rgba(30,42,47,.25);
+  transition:transform .12s, background .12s;color:#4a5c62}
+.mk button:hover{transform:scale(1.12)}
+.mk button.on.been{background:var(--accent2);color:#fff}
+.mk button.on.want{background:var(--gold);color:#1e2a2f}
+.cardp.been-mark .ph img{filter:saturate(.55)}
+.cardp.been-mark::after{content:"✓ been";position:absolute;left:0;top:0;background:var(--accent2);color:#fff;
+  font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:0 0 10px 0;z-index:4}
+.cardp.want-mark::after{content:"★ want to go";position:absolute;left:0;top:0;background:var(--gold);color:#1e2a2f;
+  font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:0 0 10px 0;z-index:4}
+.mkbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-left:auto}
+.mkbar .mkbtn{padding:8px 13px;border-radius:9px;border:1.5px solid #ded6c7;background:#faf8f4;
+  font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;font-family:var(--sans)}
+.mkbar .mkbtn:hover{border-color:var(--accent2);color:var(--accent2)}
+.mkbar .mkcount{font-size:12.5px;color:var(--ink-soft)}
+.m-mk{display:flex;gap:10px;margin:14px 0 2px}
+.m-mk button{flex:1;padding:11px;border-radius:10px;border:1.5px solid #ded6c7;background:#faf8f4;
+  font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;font-family:var(--sans)}
+.m-mk button.on.been{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.m-mk button.on.want{background:var(--gold);border-color:var(--gold);color:#1e2a2f}
+.cardp.been-mark .st,.cardp.want-mark .st{top:38px}
+.bdg{position:absolute;right:10px;top:12px;font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:999px;backdrop-filter:blur(4px);text-transform:uppercase}
+.bdg.icon{background:rgba(30,42,47,.62);color:#f0e6c8}
+.bdg.gem{background:rgba(201,162,39,.9);color:#241d07}
+.unbadge{position:absolute;right:10px;top:40px;font-size:10px;font-weight:700;letter-spacing:.07em;padding:3px 9px;border-radius:999px;background:rgba(61,107,142,.92);color:#eef5fb;text-transform:uppercase}
+.body{padding:15px 17px 17px;display:flex;flex-direction:column;gap:7px;flex:1}
+.cat{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h3{font-family:var(--serif);font-weight:500;font-size:19.5px;line-height:1.18}
+.prov{font-size:11.5px;color:#9a8f7c;letter-spacing:.04em;margin-top:-3px}
+.desc{font-size:13.5px;line-height:1.55;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.meta-row{margin-top:auto;padding-top:8px;display:flex;flex-direction:column;gap:4px}
+.season,.dist{font-size:12px;color:#8a7f6d;display:flex;align-items:center;gap:6px}
+.dist b{color:#6d6250;font-weight:600}
+
+#mapwrap{display:none;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;position:relative}
+#mapwrap svg{width:100%;height:auto;display:block}
+.stpath{stroke:#fff;stroke-width:1.6;transition:opacity .2s}
+.mapdot{cursor:pointer;transition:r .15s}
+.mapdot:hover{stroke-width:3}
+.maplabel{font-family:var(--sans);font-size:12px;font-weight:700;fill:#6b6154;letter-spacing:.07em;
+  stroke:#fff;stroke-width:3.5;paint-order:stroke fill;stroke-linejoin:round}
+#maptip{position:absolute;pointer-events:none;background:#1e2a2f;color:#f6f2ea;font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:8px;opacity:0;transition:opacity .12s;white-space:nowrap;z-index:10;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.maplegend{margin-top:10px;font-size:12px;color:#8a7f6d;display:flex;gap:18px;flex-wrap:wrap}
+.maplegend span{display:flex;align-items:center;gap:6px}
+
+.overlay{position:fixed;inset:0;background:rgba(18,32,36,.72);z-index:50;display:none;align-items:flex-start;justify-content:center;padding:4vh 16px;overflow-y:auto;backdrop-filter:blur(3px)}
+.overlay.open{display:flex}
+.modal{background:var(--paper);max-width:680px;width:100%;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-lg);animation:pop .28s cubic-bezier(.2,.9,.3,1.2) both;margin:auto}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(14px)}to{opacity:1;transform:none}}
+.m-ph{position:relative;aspect-ratio:16/9.4;background:#dcd5c8}
+.m-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.m-ph .grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(18,32,36,.55),transparent 55%)}
+.m-ph .close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;background:rgba(18,32,36,.55);color:#fff;font-size:17px;line-height:1;backdrop-filter:blur(4px)}
+.m-ph .m-state{position:absolute;left:18px;bottom:14px;color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.m-ph .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.m-body{padding:24px 28px 28px}
+.m-body .cat{margin-bottom:4px}
+.m-body h2{font-family:var(--serif);font-weight:500;font-size:29px;line-height:1.1;margin-bottom:2px}
+.m-body .trname{font-size:13.5px;color:#9a8f7c;font-style:italic;font-family:var(--serif);margin-bottom:12px}
+.m-body .full{font-size:15px;line-height:1.65;color:#33424f}
+.sec{margin-top:18px}
+.sec-h{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9a8f7c;font-weight:700;margin-bottom:8px}
+.todo{list-style:none}
+.todo li{font-size:14px;line-height:1.55;color:#33424f;padding:5px 0 5px 24px;position:relative;border-bottom:1px dashed #e6dfd1}
+.todo li:last-child{border-bottom:none}
+.todo li::before{content:"✦";position:absolute;left:2px;color:var(--gold);font-size:12px;top:7px}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ibox{background:#fff;border-radius:10px;padding:12px 15px;border:1px solid #e9e2d5;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.ibox b{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#9a8f7c;margin-bottom:3px}
+.gt{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gt .ibox em{font-style:normal;font-weight:700;color:var(--ink)}
+.gt .sub2{display:block;margin-top:4px;font-size:12.5px;color:#8a7f6d}
+.m-links{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.m-links a{text-decoration:none;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;border:1.5px solid var(--accent2);color:var(--accent2);transition:all .15s}
+.m-links a:hover{background:var(--accent2);color:#fff}
+.m-links a.map{border-color:var(--accent);color:var(--accent)}
+.m-links a.map:hover{background:var(--accent);color:#fff}
+.m-links a.stay{border-color:#3d6b8e;color:#3d6b8e}
+.m-links a.stay:hover{background:#3d6b8e;color:#fff}
+.m-links a.tube{border-color:#8f1f2c;color:#8f1f2c}
+.m-links a.tube:hover{background:#8f1f2c;color:#fff}
+.credit{margin-top:14px;font-size:11px;color:#a99e8a}
+.m-nav{display:flex;justify-content:space-between;margin-top:14px}
+.m-nav button{border:none;background:none;cursor:pointer;font-size:13px;color:#8a7f6d;font-weight:600;padding:6px 4px}
+.m-nav button:hover{color:var(--accent2)}
+
+#tripswrap{display:none;flex-direction:column;gap:22px}
+.trip{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;animation:rise .4s ease both}
+.trip-top{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.tbadge{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 11px;border-radius:999px;background:#efe8d9;color:#6d6250}
+.tbadge.mode{background:#e0ecea;color:var(--accent2)}
+.trip h3{font-size:24px;margin:2px 0 2px}
+.trip .treg{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.tstrip{display:flex;gap:8px;margin:12px 0 6px;flex-wrap:wrap}
+.tstrip img{width:92px;height:62px;object-fit:cover;border-radius:8px;cursor:pointer;transition:transform .15s;box-shadow:0 2px 8px rgba(30,42,47,.18)}
+.tstrip img:hover{transform:scale(1.06)}
+.tday{margin-top:10px}
+.tday b{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9a8f7c}
+.tday ul{list-style:none;margin-top:4px}
+.tday li{font-size:14px;line-height:1.6;color:#33424f;padding:3px 0 3px 22px;position:relative}
+.tday li::before{content:"→";position:absolute;left:2px;color:var(--gold)}
+.tday .pl{color:var(--accent2);font-weight:700;cursor:pointer;border-bottom:1px dashed #8fbdbb}
+.tday .pl:hover{color:#0d4b4b}
+.tfoot{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px;border-top:1px dashed #e6dfd1;padding-top:12px;font-size:13.5px;color:var(--ink-soft)}
+.tfoot a{text-decoration:none;font-size:13px;font-weight:600;padding:7px 13px;border-radius:9px;border:1.5px solid var(--accent2);color:var(--accent2)}
+.tfoot a:hover{background:var(--accent2);color:#fff}
+.tfoot a.stay{border-color:#3d6b8e;color:#3d6b8e}
+.tfoot a.stay:hover{background:#3d6b8e;color:#fff}
+.tnote{margin-top:9px;font-size:12.5px;color:#8a7f6d;font-style:italic;font-family:var(--serif)}
+.actline{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 0}
+.acttag{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:#f1ece0;color:#6d6250}
+.revbox{background:#fdf9ef;border:1px solid #eee0c2;border-radius:10px;padding:13px 16px;font-size:13.5px;line-height:1.6;color:#5c5140;margin-top:10px}
+.revbox b{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#b39a4d;margin-bottom:4px}
+
+#seasonswrap{display:none}
+.sintro{font-family:var(--serif);font-size:19px;line-height:1.5;color:#33424f;max-width:840px;margin:4px 2px 18px;font-style:italic}
+.sevents{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 22px;margin-bottom:24px}
+.sevents b.h{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9a8f7c;margin-bottom:10px}
+.sevents ul{list-style:none}
+.sevents li{font-size:14px;line-height:1.6;color:#33424f;padding:5px 0 5px 24px;position:relative}
+.sevents li::before{content:"❂";position:absolute;left:2px;color:var(--gold);font-size:12px;top:7px}
+.sevents .pl{color:var(--accent2);font-weight:700;cursor:pointer;border-bottom:1px dashed #8fbdbb}
+.shead{font-family:var(--serif);font-size:22px;margin:26px 2px 14px;color:var(--ink)}
+.shead small{font-size:13px;color:#8a7f6d;font-family:var(--sans);margin-left:8px}
+footer{max-width:1180px;margin:30px auto 0;padding:26px 24px 46px;border-top:1px solid #e4ddcf;font-size:12.5px;color:#a99e8a;line-height:1.7}
+.empty{padding:70px 20px;text-align:center;color:#9a8f7c;font-family:var(--serif);font-size:19px;font-style:italic;display:none}
+@media(max-width:640px){
+  header{padding:40px 18px 84px}
+  .stats{gap:22px}
+  .m-body{padding:20px}
+  .info,.gt{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-wrap">
+    <div class="eyebrow">Gezi defteri &middot; A personal atlas</div>
+    <h1>Beautiful <em>Türkiye</em></h1>
+    <p class="sub"><span id="n-places">0</span> places worth the flight — Lycian coves and Kaçkar yaylas, Göbekli Tepe and the Phrygian valleys, tea houses on the Bosphorus and salt lakes on the steppe. With the nearest airport, the ground leg and the right month for each one, planned from Vienna.</p>
+    <div class="stats">
+      <div class="stat"><b id="stat-n">0</b><span>Places</span></div>
+      <div class="stat"><b>7</b><span>Bölge · regions</span></div>
+      <div class="stat"><b id="stat-gems">0</b><span>Hidden gems</span></div>
+      <div class="stat"><b id="stat-un">0</b><span>UNESCO sites</span></div>
+      <div class="stat"><b id="stat-trips">0</b><span>Routes</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="panel">
+    <div class="row">
+      <input id="q" type="search" placeholder="Search places, e.g. ‘canyon’, ‘Lycian’, ‘UNESCO’, ‘Mardin’…">
+      <select id="sort">
+        <option value="west">West → East</option>
+        <option value="near">Easiest to reach</option>
+        <option value="az">A – Z</option>
+        <option value="shuffle">Shuffle</option>
+      </select>
+      <div class="viewtog">
+        <button id="v-grid" class="on">▦ Grid</button>
+        <button id="v-map">◎ Map</button>
+        <button id="v-trips">◆ Routes</button>
+        <button id="v-seasons">❂ Seasons</button>
+      </div>
+      <button class="btn-surprise" id="surprise">✦ Inspire me</button>
+    </div>
+    <div class="row"><span class="lbl">Region</span><div class="chips" id="state-chips"></div></div>
+    <div class="row"><span class="lbl">Type</span><div class="chips" id="cat-chips"></div></div>
+    <div class="row"><span class="lbl">Activity</span><div class="chips" id="act-chips"></div></div>
+    <div class="row"><span class="lbl">Yours</span><div class="chips" id="mark-chips"></div>
+      <div class="mkbar">
+        <span class="mkcount" id="mkcount"></span>
+        <button class="mkbtn" id="mk-save">⤓ Save marks</button>
+        <button class="mkbtn" id="mk-load">⤒ Load marks</button>
+        <input type="file" id="mk-file" accept=".json,application/json" style="display:none">
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="count-line" id="countline"></div>
+  <div class="grid" id="grid"></div>
+  <div id="mapwrap">
+    <div id="mapsvg-holder"></div>
+    <div id="maptip"></div>
+    <div class="maplegend" id="maplegend"></div>
+  </div>
+  <div id="tripswrap"></div>
+  <div id="seasonswrap">
+    <div class="panel" style="margin-bottom:18px">
+      <div class="chips" id="month-chips"></div>
+    </div>
+    <div id="season-content"></div>
+  </div>
+  <div class="empty" id="empty">Nothing here — loosen a filter and keep wandering.</div>
+</main>
+
+<footer>
+  <div><b>Getting there:</b> every place is matched to its nearest usable airport. Vienna has year-round nonstops to Istanbul (IST and Sabiha Gökçen), Ankara, İzmir and Antalya, and summer-season nonstops to Bodrum and Dalaman; everywhere else is one stop through Istanbul. Flight times and fares are typical 2026 ranges for a return booked a few weeks out, not quotes — check Turkish Airlines, AJet, Pegasus and SunExpress. Ground distances are road-estimated from the airport and assume an average 62 km/h, which is optimistic on eastern mountain roads and pessimistic on the new motorways.</div>
+  <div style="margin-top:6px"><b>On the ground:</b> intercity buses reach almost everything and are cheap; a hire car is worth it in Cappadocia, Lycia, the eastern Black Sea yaylas and the southeast. Museum entry is priced separately for foreign visitors at state sites and the <i>Museum Pass Türkiye</i> pays for itself in about three sites. Prices shift with the lira — treat every figure here as an order of magnitude, not a quote.</div>
+  <div style="margin-top:6px"><b>Photos:</b> Wikimedia Commons contributors under their respective free licences; photographer and licence are shown on each place. Season scores assume normal years: interior Anatolia and the southeast pass 40&nbsp;°C in July and August, eastern passes and yayla roads are snowbound roughly November to April, and the eastern Black Sea is green because it rains. Check locally before a long drive.</div>
+  <div style="margin-top:6px">Your ✓/★ marks live in this page only — press <b>Save marks</b> before closing it, and <b>Load marks</b> to bring them back. Built for Riza · sister atlas to Beautiful Austria and Beautiful Slovakia · __BUILT__</div>
+</footer>
+
+<div class="overlay" id="overlay"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
+
+<script>
+__DATA__
+
+const MNAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+let selMonth = new Date().getMonth()+1;
+const STATE_ORDER = ["Marmara","Aegean","Mediterranean","Central Anatolia","Black Sea","Southeastern Anatolia","Eastern Anatolia"];
+const STATE_COLORS = {"Marmara":"#1c2733","Aegean":"#c07a3d","Mediterranean":"#3d6b8e","Central Anatolia":"#b0413e","Black Sea":"#2c6e63","Southeastern Anatolia":"#c9a227","Eastern Anatolia":"#7d5a8a"};
+const CATS = {ruins:{label:"Ancient Sites",ico:"◫"},heritage:{label:"Mosques, Churches & Castles",ico:"♜"},coast:{label:"Coast & Islands",ico:"≈"},mountain:{label:"Mountains & Yaylas",ico:"▲"},water:{label:"Lakes, Falls & Canyons",ico:"≋"},village:{label:"Villages & Old Towns",ico:"⌂"},city:{label:"Cities",ico:"✦"},nature:{label:"Parks & Wild Places",ico:"❦"},drive:{label:"Scenic Drives & Rail",ico:"⌁"}};
+
+let fState=null,fCat=null,fAct=null,query="",sortMode="west",currentIdx=-1,visible=[],gemOnly=false,unOnly=false,view="grid";
+const byId=id=>DATA.find(p=>p.id===id);
+const $=s=>document.querySelector(s);
+const grid=$("#grid");
+function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/ı/g,"i").replace(/ş/g,"s").replace(/ğ/g,"g").replace(/ç/g,"c").replace(/ö/g,"o").replace(/ü/g,"u")}
+function fmtMin(min){const h=Math.floor(min/60);const m=min%60;return (h?h+"h":"")+String(m).padStart(h?2:1,"0")+(h?"":" min")}
+function reach(p){return p.apmin + (p.flink.indexOf("1 stop")===0?190:170)}
+
+function buildChips(){
+  const sc=$("#state-chips"),counts={};
+  DATA.forEach(p=>counts[p.state]=(counts[p.state]||0)+1);
+  let html=`<span class="chip on" data-v="">All <span class="n">${DATA.length}</span></span>`;
+  STATE_ORDER.forEach(s=>{html+=`<span class="chip" data-v="${s}">${s} <span class="n">${counts[s]||0}</span></span>`});
+  sc.innerHTML=html;
+  sc.addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;
+    sc.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));c.classList.add("on");fState=c.dataset.v||null;render()});
+  const cc=$("#cat-chips"),ccounts={};
+  DATA.forEach(p=>ccounts[p.cat]=(ccounts[p.cat]||0)+1);
+  let ch=`<span class="chip on" data-v="">All</span>`;
+  Object.keys(CATS).forEach(k=>{ch+=`<span class="chip" data-v="${k}">${CATS[k].ico} ${CATS[k].label} <span class="n">${ccounts[k]||0}</span></span>`});
+  ch+=`<span class="chip badgechip" data-v="gem">✧ Hidden gems</span>`;
+  ch+=`<span class="chip unchip" data-v="unesco">▣ UNESCO</span>`;
+  cc.innerHTML=ch;
+  cc.addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;
+    if(c.dataset.v==="gem"){c.classList.toggle("on");gemOnly=c.classList.contains("on");render();return}
+    if(c.dataset.v==="unesco"){c.classList.toggle("on");unOnly=c.classList.contains("on");render();return}
+    cc.querySelectorAll(".chip:not(.badgechip):not(.unchip)").forEach(x=>x.classList.remove("on"));
+    c.classList.add("on");fCat=c.dataset.v||null;render()});
+  const ac=$("#act-chips"),acounts={};
+  DATA.forEach(p=>(p.act||[]).forEach(a=>acounts[a]=(acounts[a]||0)+1));
+  let ah=`<span class="chip on" data-v="">All</span>`;
+  Object.keys(ACT).forEach(k=>{if(!acounts[k])return;ah+=`<span class="chip" data-v="${k}">${ACT[k][0]} ${ACT[k][1]} <span class="n">${acounts[k]}</span></span>`});
+  ac.innerHTML=ah;
+  ac.addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;
+    ac.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));
+    c.classList.add("on");fAct=c.dataset.v||null;render()});
+}
+
+/* ---------- been-there / want-to-go marks ---------- */
+const MARKS = {};
+let fMark = null;
+function markCount(kind){return Object.values(MARKS).filter(v=>v===kind).length}
+function toggleMark(id, kind, ev){
+  if(ev){ev.stopPropagation();}
+  MARKS[id] = MARKS[id]===kind ? undefined : kind;
+  if(!MARKS[id]) delete MARKS[id];
+  buildMarkChips(); render();
+  if(currentIdx>=0 && DATA[currentIdx] && DATA[currentIdx].id===id) openModal(currentIdx);
+}
+function markBtns(p){
+  const m=MARKS[p.id];
+  return `<div class="mk">
+    <button class="been ${m==="been"?"on":""}" title="I've been here"
+      onclick="toggleMark('${p.id}','been',event)">✓</button>
+    <button class="want ${m==="want"?"on":""}" title="I want to go"
+      onclick="toggleMark('${p.id}','want',event)">★</button></div>`;
+}
+function buildMarkChips(){
+  const b=markCount("been"), w=markCount("want");
+  const opts=[[null,"All"],["want","★ Want to go"],["been","✓ Been there"],["unseen","Not marked"]];
+  $("#mark-chips").innerHTML=opts.map(([k,label])=>{
+    const n = k==="been"?b : k==="want"?w : k==="unseen"? DATA.length-b-w : DATA.length;
+    return `<span class="chip ${fMark===k?"on":""}" data-mk="${k===null?"":k}">${label} <i>${n}</i></span>`;
+  }).join("");
+  $("#mkcount").textContent = (b||w) ? `${b} visited · ${w} on the list` : "click ✓ or ★ on any place";
+}
+function initMarks(){
+  buildMarkChips();
+  $("#mark-chips").onclick=e=>{
+    const c=e.target.closest(".chip"); if(!c)return;
+    fMark = c.dataset.mk || null; buildMarkChips(); render();
+  };
+  $("#mk-save").onclick=()=>{
+    const data=JSON.stringify({atlas:"beautiful-turkiye",saved:new Date().toISOString(),marks:MARKS},null,1);
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob([data],{type:"application/json"}));
+    a.download="turkiye-marks.json"; a.click(); URL.revokeObjectURL(a.href);
+  };
+  $("#mk-load").onclick=()=>$("#mk-file").click();
+  $("#mk-file").onchange=e=>{
+    const f=e.target.files[0]; if(!f)return;
+    const r=new FileReader();
+    r.onload=()=>{ try{
+      const o=JSON.parse(r.result); const m=o.marks||o;
+      Object.keys(MARKS).forEach(k=>delete MARKS[k]);
+      const ids=new Set(DATA.map(p=>p.id));
+      Object.entries(m).forEach(([k,v])=>{ if(ids.has(k)&&(v==="been"||v==="want")) MARKS[k]=v; });
+      buildMarkChips(); render();
+    }catch(err){ alert("That file could not be read as a marks file."); } };
+    r.readAsText(f); e.target.value="";
+  };
+}
+
+function filtered(){
+  let list=DATA.filter(p=>{
+    if(fState&&p.state!==fState)return false;
+    if(fCat&&p.cat!==fCat)return false;
+    if(fAct&&!(p.act||[]).includes(fAct))return false;
+    if(gemOnly&&p.badge!=="gem")return false;
+    if(unOnly&&!p.unesco)return false;
+    if(fMark==="unseen"){ if(MARKS[p.id])return false; }
+    else if(fMark&&MARKS[p.id]!==fMark)return false;
+    if(query){const hay=norm(p.name+" "+p.tr+" "+p.state+" "+p.prov+" "+p.desc+" "+p.tip+" "+p.season+" "+(p.todo||[]).join(" ")+" "+CATS[p.cat].label+" "+p.ap+(p.unesco?" unesco world heritage":""));
+      if(!hay.includes(norm(query)))return false}
+    return true});
+  if(sortMode==="az")list=[...list].sort((a,b)=>a.name.localeCompare(b.name));
+  else if(sortMode==="near")list=[...list].sort((a,b)=>reach(a)-reach(b));
+  else if(sortMode==="shuffle"){list=[...list];for(let i=list.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[list[i],list[j]]=[list[j],list[i]]}}
+  else list=[...list].sort((a,b)=>(STATE_ORDER.indexOf(a.state)-STATE_ORDER.indexOf(b.state))||(a.lon-b.lon));
+  return list;
+}
+
+const sun=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#b3a88f" stroke-width="2.4"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2 2M17.4 17.4l2 2M19.4 4.6l-2 2M6.6 17.4l-2 2"/></svg>`;
+const planeI=`<svg width="12" height="12" viewBox="0 0 24 24" fill="#b3a88f"><path d="M21 15.5v-2l-8-4.5V3.8a1.3 1.3 0 0 0-2.6 0V9L2.4 13.5v2l8-2.4v4.6l-2.2 1.5v1.6l3.5-1 3.5 1v-1.6L13 17.7v-4.6z"/></svg>`;
+
+function card(p,i){
+  const col=STATE_COLORS[p.state];
+  return `<div class="cardp ${MARKS[p.id]==="been"?"been-mark":MARKS[p.id]==="want"?"want-mark":""}" style="animation-delay:${Math.min(i*22,340)}ms" onclick="openModal(${DATA.indexOf(p)})">
+    <div class="ph"><img src="${IMGS[p.id]||''}" alt="${p.name}" loading="lazy">
+      <span class="st" style="background:${col}">${p.state}</span>
+      <span class="bdg ${p.badge}">${p.badge==="gem"?"✧ hidden gem":"classic"}</span>
+      ${p.unesco?'<span class="unbadge">▣ UNESCO</span>':''}${markBtns(p)}</div>
+    <div class="body">
+      <span class="cat">${CATS[p.cat].ico} ${CATS[p.cat].label}</span>
+      <h3>${p.name}</h3>
+      <div class="prov">${p.prov}</div>
+      <p class="desc">${p.desc}</p>
+      <div class="meta-row"><span class="season">${sun} ${p.season}</span>
+        <span class="dist">${planeI} <b>${p.ap}</b> ${p.fd} · then ${p.apkm} km / ~${fmtMin(p.apmin)}</span></div>
+    </div></div>`;
+}
+
+function render(){
+  visible=filtered();
+  grid.style.display="none";$("#mapwrap").style.display="none";$("#tripswrap").style.display="none";$("#seasonswrap").style.display="none";
+  if(view==="grid"){ grid.style.display="grid"; grid.innerHTML=visible.map((p,i)=>card(p,i)).join(""); }
+  else if(view==="map"){ $("#mapwrap").style.display="block"; drawMap(); }
+  else if(view==="trips"){ $("#tripswrap").style.display="flex"; renderTrips(); }
+  else { $("#seasonswrap").style.display="block"; renderSeasons(); }
+  if(view==="trips"){
+    $("#empty").style.display="none";
+    $("#countline").textContent=`${TRIPS.length} routes, west to east — each one built around a single airport. Click any place name for its full page.`;
+    return;
+  }
+  if(view==="seasons"){
+    $("#empty").style.display="none";
+    $("#countline").textContent=`Where Türkiye is at its best, month by month — your Region/Type/Activity filters apply here too.`;
+    return;
+  }
+  $("#empty").style.display=visible.length?"none":"block";
+  const gems=visible.filter(p=>p.badge==="gem").length;
+  $("#countline").textContent=visible.length===DATA.length
+    ? `All ${DATA.length} places, west to east.`
+    : `${visible.length} place${visible.length===1?"":"s"} found · ${gems} hidden gem${gems===1?"":"s"} among them.`;
+}
+
+const MODE_LBL={car:"🚗 hire car",bus:"🚌 bus-friendly",walk:"🥾 walking route",boat:"⛵ boat & coast",rail:"🚂 by train"};
+function tripDay(label,steps){
+  if(!steps)return"";
+  const items=steps.map(([pid,txt])=>{
+    const p=pid?byId(pid):null;
+    return `<li>${p?`<span class="pl" onclick="openModal(${DATA.indexOf(p)})">${p.name}</span> — `:""}${txt}</li>`;
+  }).join("");
+  return `<div class="tday"><b>${label}</b><ul>${items}</ul></div>`;
+}
+function renderTrips(){
+  $("#tripswrap").innerHTML=TRIPS.map((t,i)=>{
+    const days=[t.d1,t.d2,t.d3,t.d4,t.d5];
+    const pids=[...new Set(days.flat().filter(Boolean).map(s=>s[0]).filter(Boolean))].filter(id=>byId(id));
+    const wps=pids.slice(0,9).map(id=>encodeURIComponent(byId(id).near)).join("%7C");
+    const route=`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(t.hub)}&destination=${encodeURIComponent(t.hub)}&waypoints=${wps}`;
+    const strip=pids.map(id=>`<img src="${IMGS[id]||''}" alt="" title="${byId(id).name}" onclick="openModal(${DATA.indexOf(byId(id))})">`).join("");
+    return `<div class="trip" style="animation-delay:${Math.min(i*36,360)}ms">
+      <div class="treg">${t.region}</div>
+      <h3>${t.title}</h3>
+      <div class="trip-top">
+        <span class="tbadge">${t.days}</span>
+        <span class="tbadge mode">${MODE_LBL[t.mode]||t.mode}</span>
+        <span class="tbadge">✈ ${t.ap}</span>
+        <span class="tbadge">${t.season}</span>
+      </div>
+      <div class="tstrip">${strip}</div>
+      ${days.map((d,n)=>tripDay(days.filter(Boolean).length===1?"The plan":"Day "+(n+1),d)).join("")}
+      <div class="tfoot">
+        ${t.stay?`<span>🛏 Base yourself in <b>${t.stay[0]}</b> — ${t.stay[1]}</span>
+        <a class="stay" href="https://www.booking.com/searchresults.html?ss=${encodeURIComponent(t.stay[0]+", Türkiye")}" target="_blank" rel="noopener">Booking.com ↗</a>`:""}
+        <a href="${route}" target="_blank" rel="noopener">Full route in Maps ↗</a>
+        <a class="stay" href="https://www.skyscanner.net/transport/flights/vie/${t.ap.toLowerCase()}/" target="_blank" rel="noopener">✈ Flights from Vienna ↗</a>
+      </div>
+      ${t.note?`<div class="tnote">${t.note}</div>`:""}
+    </div>`;
+  }).join("");
+}
+
+/* ---------- map ---------- */
+function px(lon,lat){return [MAP.pad+(lon-MAP.lon0)*MAP.kx*MAP.scale, MAP.pad+(MAP.lat1-lat)*MAP.scale]}
+function drawMap(){
+  const ids=new Set(visible.map(p=>p.id));
+  let s=`<svg viewBox="0 0 ${MAP.w} ${MAP.h}" xmlns="http://www.w3.org/2000/svg">`;
+  for(const [name,d] of Object.entries(MAP.paths)){
+    const dim=fState&&fState!==name;
+    s+=`<path class="stpath" d="${d}" fill="${STATE_COLORS[name]}" fill-opacity="${dim?0.05:0.17}" stroke="#fff"/>`;
+  }
+  for(const [name,xy] of Object.entries(MAP.labels))
+    s+=`<text class="maplabel" x="${xy[0]}" y="${xy[1]}" text-anchor="middle">${name.toUpperCase()}</text>`;
+  AIRPORTS.forEach(a=>{
+    const [x,y]=px(a[2],a[1]);
+    s+=`<g opacity=".5"><circle cx="${x}" cy="${y}" r="2.4" fill="#5d5346"/></g>`;
+  });
+  DATA.forEach(p=>{
+    if(!ids.has(p.id))return;
+    const [x,y]=px(p.lon,p.lat);
+    s+=`<circle class="mapdot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${p.badge==='icon'?5.6:4.6}" fill="${STATE_COLORS[p.state]}" stroke="#fff" stroke-width="1.6"
+        data-i="${DATA.indexOf(p)}" data-n="${p.name.replace(/"/g,'&quot;')} · ${p.prov} · ✈ ${p.ap}"/>`;
+  });
+  s+=`</svg>`;
+  $("#mapsvg-holder").innerHTML=s;
+  $("#maplegend").innerHTML=`<span>● a beautiful place — click to open</span><span>Larger dot = classic, smaller = hidden gem</span><span>◦ airport</span><span>Colour = region</span>`;
+  const tip=$("#maptip"), wrap=$("#mapwrap");
+  wrap.querySelectorAll(".mapdot").forEach(dot=>{
+    dot.addEventListener("mousemove",e=>{
+      const r=wrap.getBoundingClientRect();
+      tip.style.left=(e.clientX-r.left+14)+"px";tip.style.top=(e.clientY-r.top-10)+"px";
+      tip.textContent=dot.dataset.n;tip.style.opacity=1;});
+    dot.addEventListener("mouseleave",()=>tip.style.opacity=0);
+    dot.addEventListener("click",()=>openModal(+dot.dataset.i));
+  });
+}
+
+/* ---------- seasons ---------- */
+function renderSeasons(){
+  const mc=$("#month-chips"); const now=new Date().getMonth()+1;
+  mc.innerHTML=MNAMES.map((n,i)=>{const m=i+1;
+    return `<span class="chip ${m===selMonth?"on":""}" data-m="${m}">${n.slice(0,3)}${m===now?" · now":""}</span>`}).join("");
+  mc.onclick=e=>{const c=e.target.closest(".chip");if(!c)return;selMonth=+c.dataset.m;renderSeasons();};
+  const m=selMonth, pool=visible;
+  const peak=pool.filter(p=>(p.sea||[])[m-1]===2).sort((a,b)=>reach(a)-reach(b));
+  const good=pool.filter(p=>(p.sea||[])[m-1]===1).sort((a,b)=>reach(a)-reach(b));
+  const ev=(MEVENTS[m]||[]).map(([pid,txt])=>{
+    const p=pid?byId(pid):null;
+    return `<li>${p?`<span class="pl" onclick="openModal(${DATA.indexOf(p)})">${p.name}</span> — `:""}${txt}</li>`;
+  }).join("");
+  $("#season-content").innerHTML=`
+    <div class="sintro">${MNAMES[m-1]} — ${MINTRO[m]||""}</div>
+    <div class="sevents"><b class="h">❂ Special this month</b><ul>${ev}</ul></div>
+    <div class="shead">✦ At their best in ${MNAMES[m-1]}<small>${peak.length} places</small></div>
+    <div class="grid">${peak.map((p,i)=>card(p,i)).join("")||'<div class="count-line">Nothing with these filters — loosen one.</div>'}</div>
+    <div class="shead">Also good now<small>${good.length} places</small></div>
+    <div class="grid">${good.map((p,i)=>card(p,i)).join("")||'<div class="count-line">—</div>'}</div>`;
+}
+
+/* ---------- modal ---------- */
+function openModal(idx){
+  currentIdx=idx;
+  const p=DATA[idx],col=STATE_COLORS[p.state];
+  const q=encodeURIComponent(p.near);
+  const dir=`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(p.apn.replace(/ \(.*\)/,"") + " Airport, Türkiye")}&destination=${q}`;
+  const cr=p.credit?`<div class="credit">Photo: ${p.credit}${p.license?" · "+p.license:""} · Wikimedia Commons</div>`:"";
+  const wiki=p.wikiurl?`<a href="${p.wikiurl}" target="_blank" rel="noopener">Wikipedia ↗</a>`:"";
+  const _mm=MARKS[p.id];
+  const markRow=`<div class="m-mk"><button class="been ${_mm==="been"?"on":""}" onclick="toggleMark('${p.id}','been',event)">✓ I've been here</button><button class="want ${_mm==="want"?"on":""}" onclick="toggleMark('${p.id}','want',event)">★ Want to go</button></div>`;
+  $("#modal").innerHTML=`
+    <div class="m-ph"><img src="${IMGS[p.id]||''}" alt="${p.name}"><div class="grad"></div>
+      <button class="close" onclick="closeModal()" aria-label="Close">✕</button>
+      <span class="m-state"><span class="dot" style="background:${col}"></span>${p.state} · ${p.prov} · ${p.badge==="gem"?"Hidden gem":"Classic"}${p.unesco?" · UNESCO":""}</span></div>
+    <div class="m-body">
+      <div class="cat">${CATS[p.cat].ico} ${CATS[p.cat].label}</div>
+      <h2>${p.name}</h2>
+      ${p.tr&&p.tr!==p.name?`<div class="trname">${p.tr}</div>`:'<div style="height:10px"></div>'}
+      <p class="full">${p.desc}</p>
+      ${markRow}
+      <div class="sec"><div class="sec-h">What to do</div>
+        <ul class="todo">${(p.todo||[]).map(t=>`<li>${t}</li>`).join("")}</ul></div>
+      <div class="actline">${(p.act||[]).map(a=>ACT[a]?`<span class="acttag">${ACT[a][0]} ${ACT[a][1]}</span>`:"").join("")}</div>
+      <div class="sec info">
+        <div class="ibox"><b>Best time</b>${p.season}</div>
+        <div class="ibox"><b>Insider tip</b>${p.tip}</div>
+        <div class="ibox" style="grid-column:1/-1"><b>Tickets</b>${p.entry}</div></div>
+      ${p.rev?`<div class="revbox"><b>What visitors say</b>${p.rev}</div>`:""}
+      <div class="sec"><div class="sec-h">Getting there · from Vienna</div>
+        <div class="gt">
+          <div class="ibox"><b>The flight</b><em>${p.ap} · ${p.fd}</em><span class="sub2">${p.apn}<br>${p.flink} · ${p.fp}</span></div>
+          <div class="ibox"><b>On the ground</b><em>${p.apkm} km · ~${fmtMin(p.apmin)}</em><span class="sub2">${p.onward}</span></div>
+        </div>
+        <div class="m-links">
+          <a class="map" href="${dir}" target="_blank" rel="noopener">🚗 Airport → here ↗</a>
+          <a href="https://www.skyscanner.net/transport/flights/vie/${p.ap.toLowerCase()}/" target="_blank" rel="noopener">✈ VIE → ${p.ap} ↗</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">📍 On the map ↗</a>
+        </div></div>
+      <div class="sec"><div class="sec-h">Stay &amp; dream</div>
+        <div class="m-links">
+          <a class="stay" href="https://www.booking.com/searchresults.html?ss=${q}" target="_blank" rel="noopener">Booking.com ↗</a>
+          <a class="stay" href="https://www.airbnb.com/s/${encodeURIComponent(p.near)}/homes" target="_blank" rel="noopener">Airbnb ↗</a>
+          <a class="tube" href="https://www.youtube.com/results?search_query=${encodeURIComponent(p.name+" Türkiye 4K")}" target="_blank" rel="noopener">▶ YouTube ↗</a>
+          <a class="tube" href="https://www.instagram.com/explore/tags/${p.tag}/" target="_blank" rel="noopener">◉ #${p.tag} ↗</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">★ Reviews ↗</a>
+          <a href="https://www.tripadvisor.com/Search?q=${encodeURIComponent(p.name)}" target="_blank" rel="noopener">Tripadvisor ↗</a>
+          ${wiki}
+        </div></div>
+      ${cr}
+      <div class="m-nav"><button onclick="stepModal(-1)">← Previous</button><button onclick="stepModal(1)">Next →</button></div>
+    </div>`;
+  $("#overlay").classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function stepModal(d){
+  if(!visible.length)return;
+  let vi=visible.findIndex(p=>DATA.indexOf(p)===currentIdx);
+  if(vi<0)vi=0;
+  vi=(vi+d+visible.length)%visible.length;
+  openModal(DATA.indexOf(visible[vi]));
+}
+function closeModal(){$("#overlay").classList.remove("open");document.body.style.overflow=""}
+$("#overlay").addEventListener("click",e=>{if(e.target.id==="overlay")closeModal()});
+document.addEventListener("keydown",e=>{
+  if(!$("#overlay").classList.contains("open"))return;
+  if(e.key==="Escape")closeModal();
+  if(e.key==="ArrowRight")stepModal(1);
+  if(e.key==="ArrowLeft")stepModal(-1);
+});
+
+$("#q").addEventListener("input",e=>{query=e.target.value.trim();render()});
+$("#sort").addEventListener("change",e=>{sortMode=e.target.value;render()});
+$("#surprise").addEventListener("click",()=>{
+  const pool=filtered().length?filtered():DATA;
+  openModal(DATA.indexOf(pool[Math.floor(Math.random()*pool.length)]));});
+function setView(v){view=v;
+  [["v-grid","grid"],["v-map","map"],["v-trips","trips"],["v-seasons","seasons"]].forEach(([id,vv])=>
+    document.getElementById(id).classList.toggle("on",vv===v));
+  render();}
+$("#v-grid").addEventListener("click",()=>setView("grid"));
+$("#v-map").addEventListener("click",()=>setView("map"));
+$("#v-trips").addEventListener("click",()=>setView("trips"));
+$("#v-seasons").addEventListener("click",()=>setView("seasons"));
+
+$("#n-places").textContent=DATA.length;
+$("#stat-n").textContent=DATA.length;
+$("#stat-trips").textContent=TRIPS.length;
+$("#stat-gems").textContent=DATA.filter(p=>p.badge==="gem").length;
+$("#stat-un").textContent=DATA.filter(p=>p.unesco).length;
+buildChips();
+initMarks();
+render();
+</script>
+</body>
+</html>

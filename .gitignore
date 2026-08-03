@@ -1,0 +1,12 @@
+# Build intermediates and the upstream HTTP cache (hundreds of MB of API responses
+# and source photographs). Everything here is reproducible with `python3 src/enrich.py`.
+build/
+
+# The published site is generated, not committed — the Pages workflow builds it on
+# every push and deploys the result, so 700-odd images never enter git history.
+docs/
+
+__pycache__/
+*.pyc
+.DS_Store
+.venv/

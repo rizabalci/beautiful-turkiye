@@ -1,0 +1,287 @@
+{
+ "wikifix": {
+  "muradiye-complex-bursa": "Muradiye Complex",
+  "selimiye-mosque-edirne": "Selimiye Mosque, Edirne",
+  "ucmakdere": "Şarköy",
+  "yalova-termal": "Termal",
+  "masukiye": "Kartepe",
+  "kerpe": "Kandıra",
+  "akhan-caravanserai": "Denizli",
+  "becin-castle": "Beçin",
+  "nallihan-bird-sanctuary": "Nallıhan",
+  "balikdami": "Sivrihisar",
+  "sille": "Sille, Konya",
+  "meke-crater-lake": "Karapınar",
+  "obruk-han": "Konya",
+  "taskale-granaries": "Taşkale, Karaman",
+  "manazan-caves": "Taşkale, Karaman",
+  "balikli-kaplica": "Sivas",
+  "kangal-sivas": "Sivas",
+  "gokpinar-lake-gurun": "Gürün",
+  "todurge-lake": "Zara, Sivas",
+  "sugul-canyon": "Sivas",
+  "yozgat-camlik-national-park": "Yozgat",
+  "ilgaz-mountain-national-park": "Ilgaz Mountains",
+  "goynuk-bolu": "Göynük",
+  "guzeldere-waterfall": "Düzce",
+  "yoruk-koyu": "Safranbolu",
+  "cifte-minareli-medrese": "Çifte Minareli Medrese, Erzurum",
+  "girlevik-waterfall": "Erzincan",
+  "ergan-mountain": "Erzincan",
+  "dogu-ekspresi": "Eastern Express",
+  "kars-kasari": "Kars"
+ },
+ "coords": {
+  "asklepion-pergamon": [
+   39.1183,
+   27.1631
+  ],
+  "weeping-rock-manisa": [
+   38.6247,
+   27.4478
+  ],
+  "kaputas-beach": [
+   36.2033,
+   29.4383
+  ],
+  "lycian-way-eastern-half": [
+   36.3958,
+   30.4722
+  ],
+  "antalya-kaleici": [
+   36.8841,
+   30.7056
+  ],
+  "antalya-museum": [
+   36.8877,
+   30.6772
+  ],
+  "konyaalti-beach": [
+   36.8611,
+   30.6318
+  ],
+  "alara-castle-alarahan": [
+   36.6472,
+   31.6672
+  ],
+  "zemi-valley": [
+   38.6333,
+   34.8258
+  ],
+  "walls-of-constantinople": [
+   41.0122,
+   28.9219
+  ],
+  "maglova-aqueduct": [
+   41.1861,
+   28.9469
+  ],
+  "kirkpinar-sarayici": [
+   41.6906,
+   26.5528
+  ],
+  "ucmakdere": [
+   40.6408,
+   27.3244
+  ],
+  "masukiye": [
+   40.6539,
+   30.0631
+  ],
+  "kerpe": [
+   41.2381,
+   30.2119
+  ],
+  "kaklik-cave": [
+   37.8339,
+   29.4386
+  ],
+  "akhan-caravanserai": [
+   37.8017,
+   29.1636
+  ],
+  "becin-castle": [
+   37.2836,
+   27.7767
+  ],
+  "nallihan-bird-sanctuary": [
+   40.1653,
+   31.4478
+  ],
+  "balikdami": [
+   39.1747,
+   31.4506
+  ],
+  "meke-crater-lake": [
+   37.6844,
+   33.6383
+  ],
+  "yerkopru-waterfall-hadim": [
+   36.9525,
+   32.5578
+  ],
+  "obruk-han": [
+   38.2311,
+   33.1789
+  ],
+  "manazan-caves": [
+   37.1656,
+   33.5911
+  ],
+  "balikli-kaplica": [
+   39.2586,
+   37.3239
+  ],
+  "kangal-sivas": [
+   39.24,
+   37.39
+  ],
+  "gokpinar-lake-gurun": [
+   38.7269,
+   37.2731
+  ],
+  "todurge-lake": [
+   39.8408,
+   37.5236
+  ],
+  "sugul-canyon": [
+   39.4794,
+   37.2331
+  ],
+  "yozgat-camlik-national-park": [
+   39.7942,
+   34.7897
+  ],
+  "ilgaz-mountain-national-park": [
+   41.0725,
+   33.7286
+  ],
+  "goynuk-bolu": [
+   40.4008,
+   30.7822
+  ],
+  "guzeldere-waterfall": [
+   40.7508,
+   31.2947
+  ],
+  "yoruk-koyu": [
+   41.2547,
+   32.7367
+  ],
+  "cag-kebabi-erzurum": [
+   39.9086,
+   41.2769
+  ],
+  "girlevik-waterfall": [
+   39.65,
+   39.68
+  ],
+  "ergan-mountain": [
+   39.68,
+   39.47
+  ],
+  "dogu-ekspresi": [
+   40.6078,
+   43.0958
+  ],
+  "kars-kasari": [
+   40.6078,
+   43.0958
+  ],
+  "suayb-city": [
+   37.095,
+   39.095
+  ],
+  "halvori-gozeleri": [
+   39.28,
+   39.35
+  ],
+  "damlatas-cave": [
+   36.5437,
+   31.9932
+  ],
+  "zap-valley": [
+   37.45,
+   43.75
+  ]
+ },
+ "imgsearch": {
+  "alsancak-izmir": "Alsancak Izmir",
+  "bozdag-odemis": "Bozdağ Ödemiş",
+  "ucagiz-teimiussa": "Ucagiz Kekova Simena",
+  "adrasan-bay": "Adrasan",
+  "ormana-village": "Ormana Akseki",
+  "ciglikara-cedar-forest": "Elmalı sedir ormanı",
+  "saklikent-ski-antalya": "Saklıkent Antalya",
+  "sapadere-canyon": "Sapadere Canyon",
+  "ihlara-valley": "Ihlara Valley",
+  "andaval-church": "Aktaş Niğde kilise",
+  "tyana-kemerhisar": "Tyana Kemerhisar",
+  "hirfanli-reservoir": "Hirfanlı Dam",
+  "grand-bazaar-istanbul": "Grand Bazaar Istanbul",
+  "cengelkoy": "Çengelköy",
+  "riva": "Riva Beykoz",
+  "golyazi": "Gölyazı Bursa",
+  "dupnisa-cave": "Dupnisa Mağarası",
+  "karaca-arboretum": "Karaca Arboretum",
+  "alabanda": "Alabanda Aydın",
+  "pedasa": "Pedasa Konacık",
+  "gundogan-bodrum": "Gündoğan Bodrum",
+  "turkbuku": "Türkbükü",
+  "akyarlar": "Akyarlar Bodrum",
+  "oren-ceramus": "Ören Milas",
+  "eymir-lake": "Eymir Gölü",
+  "ivriz-relief": "İvriz relief",
+  "karaman-hatuniye": "Hatuniye Medresesi Karaman",
+  "akcakoca": "Akçakoca",
+  "filyos-tios": "Tios Filyos",
+  "kemaliye-egin": "Kemaliye",
+  "dogubayazit-meteor-crater": "Doğubayazıt meteor çukuru",
+  "diyadin-hot-springs": "Diyadin Ağrı kaplıcaları",
+  "walls-of-constantinople": "Walls of Constantinople Istanbul",
+  "maglova-aqueduct": "Mağlova Kemeri",
+  "kirkpinar-sarayici": "Kırkpınar yağlı güreş",
+  "ucmakdere": "Uçmakdere Şarköy",
+  "kaklik-cave": "Kaklık Mağarası",
+  "akhan-caravanserai": "Akhan Denizli",
+  "becin-castle": "Beçin Kalesi",
+  "nallihan-bird-sanctuary": "Nallıhan Kuş Cenneti",
+  "balikdami": "Balıkdamı",
+  "meke-crater-lake": "Meke Gölü",
+  "yerkopru-waterfall-hadim": "Yerköprü Şelalesi",
+  "obruk-han": "Obruk Han",
+  "taskale-granaries": "Taşkale tahıl ambarları",
+  "manazan-caves": "Manazan Mağaraları",
+  "balikli-kaplica": "Kangal Balıklı Kaplıca",
+  "kangal-sivas": "Kangal Sivas",
+  "gokpinar-lake-gurun": "Gökpınar Gölü Gürün",
+  "todurge-lake": "Tödürge Gölü",
+  "sugul-canyon": "Şuğul Kanyonu",
+  "yozgat-camlik-national-park": "Yozgat Çamlığı Milli Parkı",
+  "ilgaz-mountain-national-park": "Ilgaz Dağı",
+  "goynuk-bolu": "Göynük Bolu",
+  "guzeldere-waterfall": "Güzeldere Şelalesi",
+  "yoruk-koyu": "Yörük Köyü Safranbolu",
+  "cag-kebabi-erzurum": "Cağ kebabı",
+  "girlevik-waterfall": "Girlevik Şelalesi",
+  "ergan-mountain": "Ergan Dağı",
+  "dogu-ekspresi": "Doğu Ekspresi",
+  "kars-kasari": "Kars kaşarı",
+  "hisaronu-kecibuku": "Hisarönü Marmaris koyu",
+  "loryma": "Bozukkale Loryma",
+  "twelve-islands-gocek": "Göcek adaları",
+  "kabak-faralya": "Kabak Koyu Faralya",
+  "sandikli-hudai-thermal": "Hüdai Kaplıcaları Sandıklı",
+  "simav-eynal-thermal": "Eynal Kaplıcaları Simav",
+  "horma-canyon-ilica-waterfall": "Horma Kanyonu Pınarbaşı",
+  "ayancik-cangal-forest": "Çangal Ormanı Ayancık",
+  "sebastopolis-sulusaray": "Sebastopolis Sulusaray",
+  "hacli-lake": "Haçlı Gölü Muş",
+  "ovacik-plateau": "Ovacık Tunceli",
+  "ataturk-dam": "Atatürk Barajı",
+  "kilis-ravanda": "Ravanda Kalesi Kilis",
+  "sira-gecesi": "Urfa sıra gecesi",
+  "suayb-city": "Şuayb Şehri Harran",
+  "halvori-gozeleri": "Halvori Tunceli"
+ }
+}
