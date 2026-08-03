@@ -8,10 +8,12 @@ the full-screen detail view (default 680 px wide).
     python3 src/render_images.py               # default size/quality
     python3 src/render_images.py --width 900 --quality 78
 """
-import argparse, io, json, os, re, sys
+import argparse, io, json, os, re, sys, time, urllib.request
 from PIL import Image
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from paths import ENRICHED, CACHE, IMGDIR
+
+UA = {"User-Agent": "BeautifulTurkiyeAtlas/1.0 (+https://github.com/rizabalci/beautiful-turkiye)"}
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--width", type=int, default=680)
@@ -21,20 +23,43 @@ a = ap.parse_args()
 
 TH = int(round(a.width * 2.05 / 3))          # the card's aspect ratio
 
-def cached(url):
-    if not url: return None
+_last = [0.0]
+def source(url, tries=5):
+    """The source photograph, from the cache if we have it and over the wire if not.
+    A cold CI runner has an empty cache, so this has to be able to fetch — politely.
+    Seven hundred rapid-fire requests get throttled, so requests are spaced and
+    retried with a widening backoff."""
+    if not url: return None, None
     key = os.path.join(CACHE, re.sub(r"[^A-Za-z0-9]", "_", url)[-180:])
-    return open(key, "rb").read() if os.path.isfile(key) else None
+    if os.path.isfile(key):
+        return open(key, "rb").read(), None
+    err = None
+    for i in range(tries):
+        gap = 0.12 - (time.time() - _last[0])       # ~8 requests a second, ceiling
+        if gap > 0: time.sleep(gap)
+        _last[0] = time.time()
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
+                blob = r.read()
+            open(key, "wb").write(blob)
+            return blob, None
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+            time.sleep(2 ** i)                       # 1, 2, 4, 8, 16 s
+    return None, err
 
 places = json.load(open(ENRICHED, encoding="utf-8"))
-made = skipped = missing = 0
+made = skipped = 0
+no_source, failed = [], []
 for p in places:
     dest = os.path.join(IMGDIR, p["id"] + ".webp")
     if os.path.exists(dest) and not a.force:
         skipped += 1; continue
-    raw = cached(p.get("thumb") or "")
+    if not p.get("thumb"):
+        no_source.append(p["id"]); continue
+    raw, err = source(p["thumb"])
     if not raw:
-        missing += 1; continue
+        failed.append((p["id"], err)); continue
     try:
         im = Image.open(io.BytesIO(raw)).convert("RGB")
         w, h = im.size
@@ -48,10 +73,15 @@ for p in places:
         im.save(dest, "WEBP", quality=a.quality, method=6)
         made += 1
     except Exception as e:
-        print(f"  ! {p['id']}: {type(e).__name__}")
-        missing += 1
+        failed.append((p["id"], f"decode: {type(e).__name__}"))
 
 total = sum(os.path.getsize(os.path.join(IMGDIR, f)) for f in os.listdir(IMGDIR) if f.endswith(".webp"))
 n = len([f for f in os.listdir(IMGDIR) if f.endswith(".webp")])
-print(f"rendered {made}, kept {skipped}, no source {missing}")
+print(f"rendered {made}, already present {skipped}, "
+      f"no photograph upstream {len(no_source)}, download failed {len(failed)}")
+for pid, err in failed:
+    print(f"  ! {pid}: {err}")
+if failed:
+    print("\n  Re-run this script to retry the failures — everything already "
+          "fetched is cached, so it picks up where it left off.")
 print(f"{n} images, {total/1e6:.1f} MB total, {total/max(n,1)/1000:.0f} KB average")

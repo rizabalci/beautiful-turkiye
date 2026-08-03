@@ -25,25 +25,34 @@ J = lambda o: json.dumps(o, ensure_ascii=False, separators=(",", ":"))
 places = json.load(open(ENRICHED, encoding="utf-8"))
 MAP    = json.load(open(MAPJSON, encoding="utf-8"))
 
+# A place with no photograph still belongs in the atlas — it gets a plain card
+# instead. Dropping it would mean one flaked download could break a route and
+# fail the whole deploy, which is a silly way to lose a build.
+PLACEHOLDER = ("data:image/svg+xml;charset=utf-8,"
+               "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 205'%3E"
+               "%3Crect width='300' height='205' fill='%23e8e2d6'/%3E"
+               "%3Cpath d='M0 150l70-46 58 34 52-40 120 62v45H0z' fill='%23d6cdba'/%3E"
+               "%3Ccircle cx='232' cy='52' r='20' fill='%23dfd6c3'/%3E%3C/svg%3E")
+
 if args.single_file:
     if not os.path.exists(IMAGES64):
         sys.exit("build/images.json is missing — run: python3 src/enrich.py --embed")
     IMGS_SRC = json.load(open(IMAGES64, encoding="utf-8"))
     have = lambda pid: pid in IMGS_SRC
-    ref  = lambda pid: IMGS_SRC[pid]
+    ref  = lambda pid: IMGS_SRC.get(pid, PLACEHOLDER)
 else:
     have = lambda pid: os.path.exists(os.path.join(IMGDIR, pid + ".webp"))
-    ref  = lambda pid: f"images/{pid}.webp"
+    ref  = lambda pid: f"images/{pid}.webp" if have(pid) else PLACEHOLDER
 
 REGIONS = ["Marmara", "Aegean", "Mediterranean", "Central Anatolia", "Black Sea",
            "Southeastern Anatolia", "Eastern Anatolia"]
 CATS = {"ruins", "heritage", "coast", "mountain", "water", "village", "city", "nature", "drive"}
 
 # ---- keep only places we can actually show -----------------------------------
-dropped, DATA_ = [], []
+dropped, DATA_, photoless = [], [], []
 for p in places:
-    if not have(p["id"]):          dropped.append((p["id"], "no photo")); continue
     if p["region"] not in REGIONS: dropped.append((p["id"], "bad region")); continue
+    if not have(p["id"]):          photoless.append(p["id"])
     if p["cat"] not in CATS: p["cat"] = "heritage"
     p["act"] = [a for a in (p.get("act") or []) if a in ACT] or ["culture"]
     sea = [int(x) if isinstance(x, (int, float)) and 0 <= x <= 2 else 1 for x in (p.get("sea") or [])][:12]
@@ -138,6 +147,9 @@ print(f"provinces   {len({p['prov'] for p in slim})}")
 print("regions     " + ", ".join(f"{r}:{sum(1 for p in slim if p['state'] == r)}" for r in REGIONS))
 print(f"gems {sum(1 for p in slim if p['badge']=='gem')}  "
       f"unesco {sum(1 for p in slim if p['unesco'])}  routes {len(trips)}")
+if photoless:
+    print(f"no photo    {len(photoless)}  (shown with a placeholder: "
+          f"{', '.join(photoless[:6])}{'…' if len(photoless) > 6 else ''})")
 if dropped: print(f"dropped     {len(dropped)}  ({', '.join(d[0] for d in dropped[:8])}…)")
 if bad_refs: print(f"unresolved route refs: {sorted(set(bad_refs))}")
 print(f"\n{os.path.relpath(out, ROOT)}  {os.path.getsize(out)/1e6:.1f} MB")

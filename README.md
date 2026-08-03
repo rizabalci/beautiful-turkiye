@@ -1,6 +1,6 @@
 # Beautiful Türkiye
 
-An interactive atlas of **712 places worth the flight**, across all 7 regions and all 81 provinces of Türkiye — from Lycian coves and Kaçkar yaylas to Göbekli Tepe and the Phrygian valleys.
+An interactive atlas of **719 places worth the flight**, across all 7 regions and all 81 provinces of Türkiye — from Lycian coves and Kaçkar yaylas to Göbekli Tepe and the Phrygian valleys.
 
 **→ [rizabalci.github.io/beautiful-turkiye](https://rizabalci.github.io/beautiful-turkiye/)**
 
@@ -8,9 +8,9 @@ It is a single self-contained page with four views: a filterable grid, a region 
 
 | | |
 |---|---|
-| Places | 712 |
+| Places | 719 |
 | Provinces covered | 81 of 81 |
-| Hidden gems | 478 |
+| Hidden gems | 485 |
 | UNESCO World Heritage sites | 57 |
 | Multi-day routes | 28 |
 | Repository size | ~4 MB (the site is built, not committed) |
@@ -23,7 +23,7 @@ It is a single self-contained page with four views: a filterable grid, a region 
 
 **The seasons are honest.** Interior Anatolia and the southeast score `0` in July and August because they pass 40 °C. Eastern passes and yayla roads score `0` from November to April because they are under snow. The Mount Nemrut summit road is `0` for seven months of the year, which is the single most useful fact about visiting it.
 
-**The geography is checked, not asserted.** Coordinates come from the Wikipedia API rather than from prose, and the build verifies every point falls inside its own region's polygon. That check caught two bad coordinates in 712 — Damlataş Cave sitting in the sea and the Zap valley landing in Iraq.
+**The geography is checked, not asserted.** Coordinates come from the Wikipedia API rather than from prose, and the build verifies every point falls inside its own region's polygon. That check caught two bad coordinates in 719 — Damlataş Cave sitting in the sea and the Zap valley landing in Iraq.
 
 ## How it is built
 
@@ -76,6 +76,8 @@ Three exports are regenerated on every build, if you want the dataset without th
 ## Adding or fixing a place
 
 Records live in `data/places/`, split by area. The field-by-field contract — including the tone rules, the category and activity vocabularies, and what the season scores mean — is in [SPEC.md](SPEC.md). The only field that must be exactly right is `wiki`: it is the English Wikipedia article title, and the whole enrichment chain hangs off it.
+
+A place whose photograph cannot be found is still included — it gets a plain placeholder card rather than being dropped, so one flaked download degrades a single card instead of breaking a route and failing the deploy.
 
 Add your record to the appropriate file, then re-run the pipeline. `build.py` validates as it goes, and `verify.py` runs the harder checks — it will tell you if a route now points at a place that does not exist, if a category is unknown, if a season array is malformed, or if your new place's coordinates landed outside the region you filed it under. Both run automatically on pull requests that touch `data/` or `src/`.
 

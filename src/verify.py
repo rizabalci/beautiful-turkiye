@@ -83,12 +83,13 @@ for p in places:
 missing_img = [p["id"] for p in places
                if not os.path.exists(os.path.join(IMGDIR, p["id"] + ".webp"))]
 if missing_img:
-    warn(f"{len(missing_img)} places have no rendered photograph and will be dropped "
-         f"from the atlas: {', '.join(missing_img[:6])}"
-         + ("…" if len(missing_img) > 6 else ""))
+    warn(f"{len(missing_img)} places have no rendered photograph and will show a "
+         f"placeholder card: {', '.join(missing_img[:6])}"
+         + ("…" if len(missing_img) > 6 else "")
+         + " — re-run src/render_images.py to retry any that were download failures")
 
 # ---- 4. routes and month lists ----------------------------------------------
-shown = ids - set(missing_img)
+shown = ids          # a missing photograph no longer removes a place from the atlas
 for t in TRIPS:
     stops = [s[0] for k in ("d1","d2","d3","d4","d5") for s in (t.get(k) or []) if s[0]]
     bad = [s for s in stops if s not in shown]
