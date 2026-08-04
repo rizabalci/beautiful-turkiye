@@ -1,4 +1,5 @@
 {
+ "_note": "coords: pinned latitude/longitude for places whose Wikipedia article carries none. These are committed rather than geocoded at build time so the pipeline is deterministic — Nominatim rate-limits and often refuses cloud IPs, which made CI builds fail at random. wikifix: article-title corrections. imgsearch: Commons search terms for places whose article has no lead photograph.",
  "wikifix": {
   "muradiye-complex-bursa": "Muradiye Complex",
   "selimiye-mosque-edirne": "Selimiye Mosque, Edirne",
@@ -203,6 +204,162 @@
   "zap-valley": [
    37.45,
    43.75
+  ],
+  "amos-ancient-city": [
+   36.74688,
+   28.26965
+  ],
+  "orhaniye-kizkumu": [
+   36.75348,
+   28.15076
+  ],
+  "carian-trail": [
+   36.69278,
+   28.04428
+  ],
+  "yuvarlakcay": [
+   36.91197,
+   28.79162
+  ],
+  "cadyanda": [
+   36.73349,
+   29.23408
+  ],
+  "lycian-way-western-half": [
+   36.57902,
+   29.15345
+  ],
+  "phrygian-way": [
+   39.01349,
+   30.4032
+  ],
+  "usak-museum-karun": [
+   38.57689,
+   29.37298
+  ],
+  "cennet-cehennem-sinkholes": [
+   36.4454,
+   34.11093
+  ],
+  "kanlidivane-canytelis": [
+   36.52505,
+   34.17897
+  ],
+  "mamure-castle": [
+   36.10048,
+   32.89322
+  ],
+  "yilankale-snake-castle": [
+   37.02888,
+   35.81244
+  ],
+  "adana-kebap-salgam": [
+   37.10242,
+   35.30611
+  ],
+  "maras-dondurma": [
+   37.78303,
+   36.83066
+  ],
+  "ilgaz-mountain-ski": [
+   41.05653,
+   33.67971
+  ],
+  "hamsilos-bay": [
+   42.05113,
+   35.04578
+  ],
+  "harsena-castle-amasya": [
+   40.65695,
+   35.77272
+  ],
+  "niksar": [
+   40.59133,
+   36.94349
+  ],
+  "kumbet-yaylasi": [
+   40.73904,
+   38.44913
+  ],
+  "bektas-yaylasi": [
+   40.73904,
+   38.44913
+  ],
+  "zigana-pass": [
+   40.81204,
+   39.61272
+  ],
+  "ayder-yaylasi": [
+   40.95252,
+   41.10205
+  ],
+  "zilkale": [
+   40.95939,
+   40.9632
+  ],
+  "cavustepe": [
+   38.32326,
+   43.4079
+  ],
+  "van-cat": [
+   38.51231,
+   43.37528
+  ],
+  "samram-canal": [
+   38.32326,
+   43.4079
+  ],
+  "ayanis-fortress": [
+   38.70148,
+   43.21316
+  ],
+  "ahlat-seljuk-cemetery": [
+   38.75465,
+   42.48333
+  ],
+  "hakkari-meydan-medresesi": [
+   37.49536,
+   44.10548
+  ],
+  "sogmatar": [
+   36.99684,
+   39.33747
+  ],
+  "han-el-barur": [
+   36.87151,
+   39.37441
+  ],
+  "zeugma-mosaic-museum": [
+   37.07558,
+   37.38561
+  ],
+  "dulukbaba": [
+   37.1535,
+   37.36206
+  ],
+  "kasimiye-medrese": [
+   37.30761,
+   40.71981
+  ],
+  "diyarbakir-walls": [
+   37.91627,
+   40.23714
+  ],
+  "diyarbakir-ulu-cami": [
+   37.91248,
+   40.23621
+  ],
+  "siirt-buryan": [
+   37.86469,
+   42.05103
+  ],
+  "kilis-ravanda": [
+   36.84084,
+   37.14288
+  ],
+  "sira-gecesi": [
+   37.25952,
+   39.04082
   ]
  },
  "imgsearch": {
