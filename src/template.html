@@ -207,7 +207,7 @@ footer{max-width:1180px;margin:30px auto 0;padding:26px 24px 46px;border-top:1px
   <div class="h-wrap">
     <div class="eyebrow">Gezi defteri &middot; A personal atlas</div>
     <h1>Beautiful <em>Türkiye</em></h1>
-    <p class="sub"><span id="n-places">0</span> places worth the flight — Lycian coves and Kaçkar yaylas, Göbekli Tepe and the Phrygian valleys, tea houses on the Bosphorus and salt lakes on the steppe. With the nearest airport, the ground leg and the right month for each one, planned from Vienna.</p>
+    <p class="sub"><span id="n-places">0</span> places worth the flight, opening on the ones you have probably never been to. Kaçkar yaylas and Phrygian valleys, Urartian forts and empty Lycian coves — graded for someone who already knows Kapadokya and Pamukkale. The classics are still here behind the ✧ filter.</p>
     <div class="stats">
       <div class="stat"><b id="stat-n">0</b><span>Places</span></div>
       <div class="stat"><b>7</b><span>Bölge · regions</span></div>
@@ -286,7 +286,7 @@ const STATE_ORDER = ["Marmara","Aegean","Mediterranean","Central Anatolia","Blac
 const STATE_COLORS = {"Marmara":"#1c2733","Aegean":"#c07a3d","Mediterranean":"#3d6b8e","Central Anatolia":"#b0413e","Black Sea":"#2c6e63","Southeastern Anatolia":"#c9a227","Eastern Anatolia":"#7d5a8a"};
 const CATS = {ruins:{label:"Ancient Sites",ico:"◫"},heritage:{label:"Mosques, Churches & Castles",ico:"♜"},coast:{label:"Coast & Islands",ico:"≈"},mountain:{label:"Mountains & Yaylas",ico:"▲"},water:{label:"Lakes, Falls & Canyons",ico:"≋"},village:{label:"Villages & Old Towns",ico:"⌂"},city:{label:"Cities",ico:"✦"},nature:{label:"Parks & Wild Places",ico:"❦"},drive:{label:"Scenic Drives & Rail",ico:"⌁"}};
 
-let fState=null,fCat=null,fAct=null,query="",sortMode="west",currentIdx=-1,visible=[],gemOnly=false,unOnly=false,view="grid";
+let fState=null,fCat=null,fAct=null,query="",sortMode="west",currentIdx=-1,visible=[],gemOnly=true,unOnly=false,view="grid";
 const byId=id=>DATA.find(p=>p.id===id);
 const $=s=>document.querySelector(s);
 const grid=$("#grid");
@@ -306,7 +306,7 @@ function buildChips(){
   DATA.forEach(p=>ccounts[p.cat]=(ccounts[p.cat]||0)+1);
   let ch=`<span class="chip on" data-v="">All</span>`;
   Object.keys(CATS).forEach(k=>{ch+=`<span class="chip" data-v="${k}">${CATS[k].ico} ${CATS[k].label} <span class="n">${ccounts[k]||0}</span></span>`});
-  ch+=`<span class="chip badgechip" data-v="gem">✧ Hidden gems</span>`;
+  ch+=`<span class="chip badgechip${gemOnly?" on":""}" data-v="gem">✧ Hidden gems</span>`;
   ch+=`<span class="chip unchip" data-v="unesco">▣ UNESCO</span>`;
   cc.innerHTML=ch;
   cc.addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;
@@ -439,7 +439,9 @@ function render(){
   const gems=visible.filter(p=>p.badge==="gem").length;
   $("#countline").textContent=visible.length===DATA.length
     ? `All ${DATA.length} places, west to east.`
-    : `${visible.length} place${visible.length===1?"":"s"} found · ${gems} hidden gem${gems===1?"":"s"} among them.`;
+    : gemOnly && !fState && !fCat && !fAct && !query && !unOnly && !fMark
+      ? `${visible.length} places you probably have not been to — the ${DATA.length-visible.length} everyone knows are hidden. Switch off ✧ Hidden gems to see them.`
+      : `${visible.length} place${visible.length===1?"":"s"} found · ${gems} hidden gem${gems===1?"":"s"} among them.`;
 }
 
 const MODE_LBL={car:"🚗 hire car",bus:"🚌 bus-friendly",walk:"🥾 walking route",boat:"⛵ boat & coast",rail:"🚂 by train"};

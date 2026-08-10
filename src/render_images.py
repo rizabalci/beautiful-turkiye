@@ -49,13 +49,29 @@ def source(url, tries=5):
     return None, err
 
 places = json.load(open(ENRICHED, encoding="utf-8"))
+
+# Remember what each rendered file was made from. If the upstream photograph
+# changes — or the size does — the stale render is replaced rather than kept,
+# which is otherwise an easy way to keep serving a picture you already rejected.
+MANIFEST = os.path.join(os.path.dirname(IMGDIR), "..", "build", "rendered.json")
+MANIFEST = os.path.abspath(MANIFEST)
+try:
+    seen = json.load(open(MANIFEST, encoding="utf-8"))
+except Exception:
+    seen = {}
+
 made = skipped = 0
 no_source, failed = [], []
 for p in places:
     dest = os.path.join(IMGDIR, p["id"] + ".webp")
-    if os.path.exists(dest) and not a.force:
+    stamp = [p.get("thumb"), a.width, a.quality]
+    if os.path.exists(dest) and not a.force and seen.get(p["id"]) == stamp:
         skipped += 1; continue
     if not p.get("thumb"):
+        # No usable photograph upstream any more — drop a render left over from a
+        # previous source, or the atlas keeps showing a picture we since rejected.
+        if os.path.exists(dest):
+            os.remove(dest); seen.pop(p["id"], None)
         no_source.append(p["id"]); continue
     raw, err = source(p["thumb"])
     if not raw:
@@ -71,9 +87,12 @@ for p in places:
             l, t = (w - a.width) // 2, max(0, int((h - TH) * 0.42))
             im = im.crop((max(0, l), t, max(0, l) + min(a.width, w), t + min(TH, h)))
         im.save(dest, "WEBP", quality=a.quality, method=6)
+        seen[p["id"]] = stamp
         made += 1
     except Exception as e:
         failed.append((p["id"], f"decode: {type(e).__name__}"))
+
+json.dump(seen, open(MANIFEST, "w", encoding="utf-8"))
 
 total = sum(os.path.getsize(os.path.join(IMGDIR, f)) for f in os.listdir(IMGDIR) if f.endswith(".webp"))
 n = len([f for f in os.listdir(IMGDIR) if f.endswith(".webp")])

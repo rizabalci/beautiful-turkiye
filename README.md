@@ -10,7 +10,7 @@ It is a single self-contained page with four views: a filterable grid, a region 
 |---|---|
 | Places | 719 |
 | Provinces covered | 81 of 81 |
-| Hidden gems | 485 |
+| Hidden gems | 395 (the page opens on these) |
 | UNESCO World Heritage sites | 57 |
 | Multi-day routes | 28 |
 | Repository size | ~4 MB (the site is built, not committed) |
@@ -18,6 +18,8 @@ It is a single self-contained page with four views: a filterable grid, a region 
 ## What makes it different from a list of sights
 
 **The travel maths is real.** Each place is matched by great-circle distance to its nearest usable airport, out of 51 in the table. Vienna has year-round nonstops to Istanbul (IST and Sabiha Gökçen), Ankara, İzmir and Antalya, and summer nonstops to Bodrum and Dalaman; everything else routes through Istanbul, and the page says which. The "easiest to reach" sort ranks by total door-to-door time rather than kilometres.
+
+**It is graded for a Turk, not a tourist.** The `gem` / `classic` split is set at the bar of *would someone from Istanbul name this without thinking* — so Uzungöl, Safranbolu, Ayder, Alaçatı, Kaleköy, Çıldır and Kırkpınar all count as classics, not discoveries. The atlas opens filtered to the 395 gems; the 324 classics are one click away behind the ✧ toggle, and every route still uses them as anchors.
 
 **The reviews are not advertising.** Every record's `rev` field is required to carry the common complaint alongside the praise — the touts, the unpaved last kilometre, the closure, the tour-bus hour. Hasankeyf says plainly that most of it went under the reservoir in 2020. Antakya and Kahramanmaraş note what the 2023 earthquakes did. The Hakkari and Şırnak entries flag travel advisories.
 

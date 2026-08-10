@@ -141,14 +141,24 @@ def commons_lookup(term):
         ii = (pg.get("imageinfo") or [{}])[0]
         if not ii.get("thumburl") or ii.get("mime", "") not in ("image/jpeg", "image/png", "image/webp"):
             continue
+        if is_junk(pg.get("title", "")): continue      # search returns locator maps too
         em = ii.get("extmetadata", {})
         return {"thumb": ii["thumburl"],
                 "artist": clean_html(em.get("Artist", {}).get("value", ""))[:90] or "Wikimedia Commons",
                 "lic": clean_html(em.get("LicenseShortName", {}).get("value", ""))[:40]}
     return None
 
-JUNK = ("view of earth","iss0","iss1","satellite","map of","locator","flag of","coat of arms",
-        "location map","topographic","blank","logo","seal of","icon","diagram")
+# Wikipedia's lead image for a district is very often a locator map, a district
+# outline or a municipal logo rather than a photograph of anywhere. Those get
+# rejected here so the Commons fallbacks can find an actual picture.
+JUNK_RE = re.compile(
+    r"(?:^|[_\-. ])maps?(?:$|[_\-. ])|locator|location|districts?[_\-]of|[_\-]districts"
+    r"|harita|landsat|sentinel|satellite|view[_\-. ]of[_\-. ]earth|iss0|iss1"
+    r"|coat[_\-]of[_\-]arms|flag|logo|seal[_\-]of|plan[_\-]of|belediye"
+    r"|topographic|blank|diagram|schematic|karte|kaart|mappa|carte[_\-. ]|atlas[_\-. ]|chart", re.I)
+
+def is_junk(name):
+    return bool(JUNK_RE.search(name or ""))
 
 def commons_geo(p):
     """Last resort for a photo: geotagged Commons files near the place, scored by name match."""
@@ -168,7 +178,7 @@ def commons_geo(p):
         title = pg["title"][5:]
         low = title.lower()
         if not ii.get("thumburl") or not ii.get("mime", "").startswith("image/"): continue
-        if any(j in low for j in JUNK): continue
+        if is_junk(title): continue
         score = sum(1 for t in toks if t in low)
         if best is None or score > best[0]:
             em = ii.get("extmetadata", {})
@@ -215,8 +225,8 @@ for n, p in enumerate(places):
             geocoded.append(p["id"])
         else:
             missing_wiki.append((p["id"], p["wiki"] + " [no coords]")); continue
-    if w.get("file") and any(j in w["file"].lower() for j in JUNK):
-        w["thumb"] = None                          # a satellite tile or a locator map is not a photo
+    if w.get("file") and is_junk(w["file"]):
+        w["thumb"] = None                          # a locator map is not a photograph of a place
     if not w.get("thumb"):                         # two shots at a photo
         for term in (OV["imgsearch"].get(p["id"]), p["name"] + " " + p["prov"], p["tr"] + " " + p["prov"]):
             if not term: continue
